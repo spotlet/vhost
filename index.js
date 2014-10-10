@@ -19,14 +19,20 @@ function onrequest (req, res) {
   var subs = parts.split('.');
   var subdomain = subs[0];
 
+  /** @TODO - seperate plylister
+  if (-1 != subs.indexOf('playlister')) {
+    return proxy.web(req, res, { target: 'http://127.0.0.1:9000'});
+  }
+ */
+
   db.spotlets.findOne({name: subdomain}, function (err, result) {
     if (err || !result) {
       if (err) { console.error(err); }
       res.statusCode = 404;
       res.write("Not found");
       res.end();
-    } if (result) {
-      proxy.web(req, res, { target: 'http://127.0.0.1:'+result.port });
     }
+
+    proxy.web(req, res, { target: 'http://127.0.0.1:'+result.port });
   });
 }
