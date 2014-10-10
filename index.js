@@ -22,8 +22,8 @@ function onrequest (req, res) {
   db.spotlets.findOne({name: subdomain}, function (err, result) {
     if (err || !result) {
       if (err) { console.error(err); }
-      res.setHeader('Location', 'spotlet.io');
-      res.statusCode = 301;
+      res.statusCode = 404;
+      res.write("Not found");
       res.end();
     } if (result) {
       proxy.web(req, res, { target: 'http://127.0.0.1:'+result.port });
